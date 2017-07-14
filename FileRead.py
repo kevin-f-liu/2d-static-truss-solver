@@ -1,4 +1,4 @@
-import numpy as np
+import numpy
 
 # Open file
 class FileRead:
@@ -22,5 +22,14 @@ class FileRead:
 
 file = FileRead("bridges.txt")
 print(file.getBridges())
-file2 = np.array(file)
-print(file2)
+
+
+
+
+
+
+
+
+
+
+
