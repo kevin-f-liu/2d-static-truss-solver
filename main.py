@@ -6,7 +6,7 @@ import Elements as el
 import FileRead as fr
 
 
-file = fr.FileRead("bridges.txt")
+file = fr.FileRead("first-bridge.txt")
 b = file.getBridge()
 
 bridge = next(b)
@@ -14,6 +14,7 @@ print(bridge)
 nodes = []
 trusses = []
 forces = []
+cost = 0
 
 memberForces = []
 memberForcesEq = []
@@ -42,10 +43,12 @@ for truss in trusses:
         elif truss.endID == node.id:
             if truss.endx is None:
                 truss.setEnd([node.x, node.y])
+    cost += truss.cost / 2
 
 # Iterate through nodes and load equations
 # print(["%s%s " % (t.startID, t.endID) for t in trusses])
 for node in nodes:
+    cost += node.cost
     # Iterate connections to build matrix
     x = []
     y = []
@@ -58,6 +61,7 @@ for node in nodes:
         for c in node.connections:
             if first is c or second is c:
                 # print(c.xlength/c.length)
+                # POSITIVE IF COMPRESSIONS, NEGATIVE IF TENSION
                 x.append(c.xlength/c.length)
                 y.append(c.ylength/c.length)
                 added = True
@@ -96,16 +100,17 @@ for node in nodes:
     memberForcesEq.append(fx)
     memberForcesEq.append(fy)
 
-for node in nodes:
-    print(node.id, end=": ")
-    for t in node.connections:
-        print(t.startID, "%s(%s)" % (t.endID, t.length), sep='-', end=' ')
-    print()
+result = np.linalg.solve(memberForces, memberForcesEq)
+print(type(result))
+for i in range(0, len(trusses), 2):
+    print("%s%s: " % (trusses[i].startID, trusses[i].endID), end='')
+    print(result[int(i/2)])
+print(result)
+print(cost)
 
-print(memberForces)
-print(len(memberForces))
-print(memberForcesEq)
-print(len(memberForcesEq))
-A = np.array(memberForces)
-b = np.array(memberForcesEq)
-print(np.linalg.solve(A, b))
+def printLinks():
+    for node in nodes:
+        print(node.id, end=": ")
+        for t in node.connections:
+            print(t.startID, "%s(%s)" % (t.endID, t.length), sep='-', end=' ')
+        print()

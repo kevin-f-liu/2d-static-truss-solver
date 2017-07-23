@@ -10,6 +10,8 @@ class Node:
         self.connections = []
         # External Forces on the Node
         self.external = []
+        # Constant cost
+        self.cost = 6
 
 class Force:
     # External forces
@@ -33,11 +35,13 @@ class Truss:
         self.xlength = None
         self.ylength = None
         self.length = None
+        self.cost = None
 
     def calcLengths(self):
         self.xlength = self.startx - self.endx
         self.ylength = self.starty - self.endy
         self.length = math.sqrt(self.xlength ** 2 + self.ylength ** 2)
+        self.cost = self.length * 12
 
     def setStart(self, loc):
         self.startx = loc[0]
