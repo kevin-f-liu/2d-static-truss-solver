@@ -31,7 +31,7 @@ class FileRead:
             forces = []
             # Match nodes
             for l in elements:
-                nodeMatch = re.search('(^\S+?)\((\d+\.?\d*)\s(\d+\.?\d*)\)', l)
+                nodeMatch = re.search('(^\S+?)\((-?\d+\.?\d*)\s(-?\d+\.?\d*)\)', l)
                 trussMatch = re.search('^\((\S+)\s(\S+)\)', l)
                 forceMatch = re.search('(^\S+?)\((\d+\.?\d*)<(\d+\.?\d*)\)', l)
 

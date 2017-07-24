@@ -6,7 +6,7 @@ import Elements as el
 import FileRead as fr
 
 
-file = fr.FileRead("first-bridge.txt")
+file = fr.FileRead("iteration2.txt")
 b = file.getBridge()
 
 bridge = next(b)
@@ -100,11 +100,12 @@ for node in nodes:
     memberForcesEq.append(fx)
     memberForcesEq.append(fy)
 
-result = np.linalg.solve(memberForces, memberForcesEq)
-print(type(result))
+result = [0 if math.fabs(num) < 1e-14 else num for num in (np.linalg.solve(memberForces, memberForcesEq)).tolist()]
+
 for i in range(0, len(trusses), 2):
     print("%s%s: " % (trusses[i].startID, trusses[i].endID), end='')
-    print(result[int(i/2)])
+    print(result[int(i/2)], end=' ')
+    print('T' if result[int(i/2)] < 0 else 'C')
 print(result)
 print(cost)
 
