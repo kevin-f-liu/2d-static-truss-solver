@@ -5,7 +5,7 @@ import FileRead as fr
 from tkinter import *
 
 
-file = fr.FileRead("iteration5.txt")
+file = fr.FileRead("iteration6.txt")
 b = file.getBridge()
 
 bridge = next(b)
@@ -126,12 +126,16 @@ def createGui():
     w = Canvas(root, width=width, height=height)
     w.pack()
 
+    for i in range(0, len(trusses), 2):
+        w.create_line(trusses[i].startx*scale + centerX,\
+                      -trusses[i].starty*scale + centerY,\
+                      trusses[i].endx*scale + centerX,\
+                      -trusses[i].endy*scale + centerY,\
+                      fill="red" if result[int(i/2)] > 0 else "green",\
+                      width=3)
     for node in nodes:
         w.create_oval(node.x*scale + centerX - radius, -node.y*scale + centerY - radius, node.x*scale + centerX + radius, -node.y*scale + centerY + radius)
         w.create_text(node.x*scale + centerX, -node.y*scale + centerY + 10, text=node.id)
-    for i in range(0, len(trusses), 2):
-        w.create_line(trusses[i].startx*scale + centerX, -trusses[i].starty*scale + centerY, trusses[i].endx*scale + centerX, -trusses[i].endy*scale + centerY)
-
     root.mainloop()
 
 def printLinks():
